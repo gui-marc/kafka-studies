@@ -1,0 +1,26 @@
+services:
+  # Service to run Kafka broker using Bitnami's Kafka image with KRaft
+  kafka:
+    container_name: kafka
+    image: 'bitnami/kafka:latest'
+    ports:
+      - 19090:19090
+      - 9092:9092
+    volumes:
+      - kafka-data:/bitnami/kafka
+    environment:
+      - KAFKA_ENABLE_KRAFT=yes
+      - KAFKA_CFG_NODE_ID=1
+      - KAFKA_CFG_BROKER_ID=1
+      - KAFKA_KRAFT_CLUSTER_ID=wgKhKz7iTay9sC-lFiIkTg
+      - KAFKA_CFG_PROCESS_ROLES=broker,controller
+      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=INTERNAL
+      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT,CONTROLLER:PLAINTEXT
+      - KAFKA_CFG_LISTENERS=INTERNAL://:9092,EXTERNAL://:19090,CONTROLLER://:9094
+      - KAFKA_CFG_ADVERTISED_LISTENERS=INTERNAL://:9092,EXTERNAL://localhost:19090
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=1@kafka:9094
+      - ALLOW_PLAINTEXT_LISTENER=yes
+  
+volumes:
+  kafka-data:
